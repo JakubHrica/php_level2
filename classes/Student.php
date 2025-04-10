@@ -7,17 +7,14 @@ class Student {
         $this->name = $name;
     }
 
-    // Uloženie nového študenta
-    public static function create($name) {
+    // Uloženie nového/načítanie už existujúceho študenta
+    public static function getOrCreate($name) {
         $students = self::getAllStudents();
-        $students[] = $name;
-        file_put_contents(self::$file, json_encode($students, JSON_PRETTY_PRINT));
-    }
-
-    // Skontroluje, či študent existuje
-    public static function exists($name) {
-        $students = self::getAllStudents();
-        return in_array($name, $students);
+        if (!in_array($name, $students)) {
+            $students[] = $name;
+            file_put_contents(self::$file, json_encode($students, JSON_PRETTY_PRINT));
+        }
+        return $name;
     }
 
     // Získanie všetkých študentov
